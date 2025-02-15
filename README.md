@@ -36,6 +36,26 @@ Este é um patch e arquivos para instalação do Issabel 5 no Rock Linux persona
 
   sudo -y install issabel-easyvpn
 
+# INSTALL SNGREP no Rocky Linux 8
+
+Passos para Instalar o SNGREP no Rocky Linux 8 (arquitetura x86_64):
+  1. Atualizar os pacotes do sistema:
+      sudo dnf update -y
+  2. Instalar dependências essenciais:
+     sudo dnf install -y epel-release dnf-utils ncurses-devel libpcap-devel cmake make gcc gcc-c++
+  3. Ativar o repositório correto para x86_64:
+     sudo dnf config-manager --set-enabled codeready-builder-for-rhel-8-x86_64-rpms
+  4. Instalar o SNGREP:
+     sudo dnf install -y sngrep
+
+Se o pacote não for encontrado, ative o repositório COPR e tente novamente:
+   sudo dnf copr enable irontec/sngrep -y
+   sudo dnf install -y sngrep
+
+  5. Verificar a instalação:
+     sngrep -V
+  6. Testar a captura de pacotes SIP:
+     sudo sngrep
 
 
 ## Ajustes Tempo de Transferencia de Chamadas ##
