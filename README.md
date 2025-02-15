@@ -28,5 +28,41 @@ curl http://repo.issabel.org/issabel5-netinstall.sh | bash
       - Ajustes automaticos de Tempo de Transferencia de Chamadas
       - Ajustes de BIP de transferencia 
 
-#INSTALL NETWORK MANAGER ROCK LINUX
+# INSTALL NETWORK MANAGER ROCK LINUX
 sudo yum install NetworkManager-tui
+
+# INSTALL EASY-VPN
+sudo -y install issabel-easyvpn
+
+
+
+## Ajustes Tempo de Transferencia de Chamadas ##
+
+  /etc/asterisk/features_general_custom.conf
+
+  e adicione as linhas:
+```
+
+    transferdigittimeout=6
+    featuredigittimeout=3000
+    atxfernoanswertimeout=35
+    pickupsound=beep
+```
+
+   - transferdigittimeout - Determina o número de segundos que o sistema aguarda o usuário digitar o número de destino numa transferência
+   - featuredigittimeout  - Determina o tempo máximo, em milisegundos, que o usuário tem de tempo para digitar entre um dígito e o outro. 
+   - atxfernoanswertimeout - Ajusta o tempo de transferencia das chamadas.
+   - pickupsound - Habilita beep ao capturar uma chamada (*8)
+
+https://wiki.asterisk.org/wiki/display/AST/Asterisk+13+Configuration_features
+
+
+
+
+
+## Como eu posso ajudar? ##
+Ajude-nos a entregar um conteúdo de qualidade. Toda ajuda é bem vinda.
+
+## Autor ##
+Autor: Leandro Saltori - Prisma Telecom
+
