@@ -6,11 +6,11 @@ This is a patch and files for installing custom Isabel 5 Rock Linux by Prisma Te
 ### BR - Descrição: ###
 Este é um patch e arquivos para instalação do Issabel 5 no Rock Linux personalizada pela Prisma Telecom.
 
-yum update
-yum -y install wget
-yum -y install curl
-wget -O -http://repo.issabel.org/issabel5-netinstall.sh | bash
-curl http://repo.issabel.org/issabel5-netinstall.sh | bash
+  yum update
+  yum -y install wget
+  yum -y install curl
+  wget -O -http://repo.issabel.org/issabel5-netinstall.sh | bash
+  curl http://repo.issabel.org/issabel5-netinstall.sh | bash
 
 ### Sobre ###}
   - Rock Linux 8  
@@ -29,10 +29,12 @@ curl http://repo.issabel.org/issabel5-netinstall.sh | bash
       - Ajustes de BIP de transferencia 
 
 # INSTALL NETWORK MANAGER ROCK LINUX
-sudo yum install NetworkManager-tui
+
+  sudo yum install NetworkManager-tui
 
 # INSTALL EASY-VPN
-sudo -y install issabel-easyvpn
+
+  sudo -y install issabel-easyvpn
 
 
 
