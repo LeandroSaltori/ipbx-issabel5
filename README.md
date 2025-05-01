@@ -9,6 +9,8 @@ Este é um patch e arquivos para instalação do Issabel 5 no Rock Linux persona
   yum update
   yum -y install wget
   yum -y install curl
+  yum -y install net-tools
+  dnf -y install NetworkManager NetworkManager-tui
   wget -O -http://repo.issabel.org/issabel5-netinstall.sh | bash
   curl http://repo.issabel.org/issabel5-netinstall.sh | bash
 
