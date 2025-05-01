@@ -11,6 +11,7 @@ Este é um patch e arquivos para instalação do Issabel 5 no Rock Linux persona
   yum -y install curl
   yum -y install net-tools
   dnf -y install NetworkManager NetworkManager-tui
+  uym -y install tcpdump
   wget -O -http://repo.issabel.org/issabel5-netinstall.sh | bash
   curl http://repo.issabel.org/issabel5-netinstall.sh | bash
 
@@ -33,6 +34,13 @@ Este é um patch e arquivos para instalação do Issabel 5 no Rock Linux persona
 # INSTALL NETWORK MANAGER ROCK LINUX
 
   sudo yum install NetworkManager-tui
+
+# INSTALL CONEXÕES SSH
+ *Se não instalar, não consegue se conectar via Putty ou SSH
+
+   dnf install -y openssh-server
+   systemctl enable sshd
+   systemctl start sshd
 
 # INSTALL EASY-VPN
 
