@@ -1,0 +1,9 @@
+Inclui a pasta "prisma_v5" dentro de:
+/var/html/themes
+
+*Renomear a pasta "admin" e enviar a nova "admin
+/var/html/
+
+*Enviar novo arquivo "favicon.ico
+
+*Renomear pasta "modules" e enviar nova pasta "modules"
