@@ -43,8 +43,13 @@ Este é um patch e arquivos para instalação do Issabel 5 no Rock Linux persona
    systemctl start sshd
 
 # INSTALL EASY-VPN
-
+  sudo dnf install nano -y
+  sudo dnf install issabel-easyvpn
   sudo yum -y install issabel-easyvpn
+
+ - REMOVER 
+  sudo yum remove issabel-easyvpn
+
 
 # INSTALL SNGREP no Rocky Linux 8
 
