@@ -502,7 +502,7 @@ function asternic_distribution($appconfig) {
 </div>
 <hr/>
 <div id='asternicfooter'>
-<div style='float:right;'><a href='https://www.asternic.net' border=0><img src='<?php echo $appconfig['relative_path'];?>/asternic_cdr_logo.jpg' alt='asternic cdr' border=0></a></div>
+<div style='float:right;'><a href='https://www.prismatelecom.com' border=0><img src='<?php echo $appconfig['relative_path'];?>/asternic_cdr_logo.jpg' alt='asternic cdr' border=0></a></div>
 </div>
 </div> <!-- end div asternic content -->
 <div style='clear:both;' class='content'></div>
@@ -880,8 +880,8 @@ if($total_calls>0) {
                   <th><?php echo _('Total')?></th>
                   <th><?php echo _('Incoming')?></th>
                   <th><?php echo _('Outgoing')?></th>
-                  <th><?php echo _('Completed')?></th>
-                  <th><?php echo _('Missed')?></th>
+                  <th><?php echo _('Completadas')?></th>
+                  <th><?php echo _('Perdidas')?></th>
                   <th><?php echo _('% Missed')?></th>
                   <th><?php echo _('Duration')?></th>
                   <th><?php echo _('%')?> <?php echo _('Duration')?> </th>
@@ -1084,7 +1084,7 @@ if($total_calls>0) {
 </div>
 <hr/>
 <div id='asternicfooter'>
-<div style='float:right;'><a href='https://www.asternic.net' border=0><img src='<?php echo $appconfig['relative_path'];?>asternic_cdr_logo.jpg' alt='asternic cdr' border=0></a></div>
+<div style='float:right;'><a href='https://www.prismatelecom.com' border=0><img src='<?php echo $appconfig['relative_path'];?>asternic_cdr_logo.jpg' alt='asternic cdr' border=0></a></div>
 </div>
 </div> <!-- end div asternic content -->
 <div style='clear:both;' class='content'></div>
@@ -1492,7 +1492,7 @@ if($total_calls>0) {
 </div>
 <hr/>
 <div id='asternicfooter'>
-<div style='float:right;'><a href='https://www.asternic.net' border=0><img src='<?php echo $appconfig['relative_path'];?>asternic_cdr_logo.jpg' alt='asternic cdr' border=0></a></div>
+<div style='float:right;'><a href='https://www.prismatelecom.com' border=0><img src='<?php echo $appconfig['relative_path'];?>asternic_cdr_logo.jpg' alt='asternic cdr' border=0></a></div>
 </div>
 </div> <!-- end div asternic content -->
 <div style='clear:both;' class='content'></div>
@@ -1910,7 +1910,7 @@ echo _('Last three months')."</a><br/>";
 </div> <!-- end div asternicmain red -->
 <hr/>
 <div id='asternicfooter'>
-<div style='float:right;'><a href='https://www.asternic.net' border=0><img src='<?php echo $appconfig['relative_path'];?>asternic_cdr_logo.jpg' alt='asternic cdr' border=0></a></div>
+<div style='float:right;'><a href='https://www.prismatelecom.com' border=0><img src='<?php echo $appconfig['relative_path'];?>asternic_cdr_logo.jpg' alt='asternic cdr' border=0></a></div>
 </div> <!-- end div asternicfooter -->
 </div> <!-- end div asternic content -->
 <div style='clear:both;' class='content'></div>

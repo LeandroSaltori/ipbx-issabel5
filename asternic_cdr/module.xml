@@ -1,15 +1,15 @@
 <module>
     <rawname>asternic_cdr</rawname>
-    <name>Asternic CDR Reports</name>
+    <name>IPbx Relatorio CDR</name>
     <version>1.6.6</version>
-        <publisher>Asternic.net</publisher>
+        <publisher>www.prismatelecom.com</publisher>
     <type>tool</type>
-    <category>Reports</category>
+    <category>Relatorio</category>
     <embedcategory>Advanced</embedcategory>
     <menuitems>
-        <asternic_cdr>Asternic CDR Reports</asternic_cdr>
+        <asternic_cdr>Relatorio CDR</asternic_cdr>
     </menuitems>
-    <description>Asternic CDR Reports for Asterisk. http://www.asternic.net</description>
+    <description>Relatorio CDR Para IPbx Prisma. http://www.prismatelecom.com</description>
     <changelog>
         *1.6.6* Make PHP 8 happy, so it works in latest FPBX versions
         *1.6.5* Use Chart.js for charts instead of deprecated Flash. Make it work in embedded Issabel

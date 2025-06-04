@@ -1,17 +1,16 @@
-
 msgid ""
 msgstr ""
 "Project-Id-Version: FreePBX - asternic_cdr module Brazilian Portuguese translation\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-06-03 12:00+0000\n"
-"PO-Revision-Date: 2025-06-03 12:00+0000\n"
+"PO-Revision-Date: 2025-06-04 07:39-0300\n"
 "Last-Translator: OpenAI Assistant\n"
 "Language-Team: Brazilian Portuguese\n"
+"Language: pt_BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Poedit-Language: Portuguese\n"
-"X-Poedit-Country: BRAZIL\n"
+"X-Generator: Poedit 3.6\n"
 
 msgid "Home"
 msgstr "Início"
@@ -194,7 +193,7 @@ msgid "Monday"
 msgstr "Segunda-feira"
 
 msgid "Combined"
-msgstr "Combinado"
+msgstr "Total"
 
 msgid "Incoming / Outgoing"
 msgstr "Entrada / Saída"
@@ -203,7 +202,7 @@ msgid "Ring Time"
 msgstr "Tempo de Toque"
 
 msgid "Billable Time"
-msgstr "Tempo Faturável"
+msgstr "Tempo Ligação"
 
 msgid "From"
 msgstr "De"
@@ -231,3 +230,12 @@ msgstr "Total de Minutos Internos"
 
 msgid "Average Internal Call Duration"
 msgstr "Duração Média das Chamadas Internas"
+
+msgid "NO ANSWER"
+msgstr "NÃO ATENDIDA"
+
+msgid "ANSWERED"
+msgstr "ATENDIDA"
+
+msgid "FAILED"
+msgstr "NÃO COMPLETOU"
