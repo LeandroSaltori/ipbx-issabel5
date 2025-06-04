@@ -18,8 +18,8 @@ Este é um patch e arquivos para instalação do Issabel 5 no Rock Linux persona
 ### Sobre ###}
   - Rock Linux 8  
 - Patch Prisma Telecom [https://github.com/LeandroSaltori/ipbx-issabel5/edit/main/README.md]
-      - Instalação do Network Manager
-      - Instalação do TCP Dump
+      - Instalação do Network Manager  
+      - Instalação do TCP Dump   
       - Instalação do SNGREP
       - Atualização do sistema (yum -y update && yum -y upgrade)
       - Instalação do OpenVPN
