@@ -75,7 +75,7 @@ Se o pacote não for encontrado, ative o repositório COPR e tente novamente:
 
 ## Install WebDeveloper ##
 
-  yum install issabel-developer -y 
+yum install issabel-developer -y 
 
 ## Ajustes Tempo de Transferencia de Chamadas ##
 
