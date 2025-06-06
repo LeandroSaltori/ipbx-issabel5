@@ -30,6 +30,7 @@ Este é um patch e arquivos para instalação do Issabel 5 no Rock Linux persona
       - Instalação do GeoIP  
       - Ajustes automaticos de Tempo de Transferencia de Chamadas
       - Ajustes de BIP de transferencia 
+      - Install Web Developer
 
 # INSTALL NETWORK MANAGER ROCK LINUX
 
@@ -72,6 +73,9 @@ Se o pacote não for encontrado, ative o repositório COPR e tente novamente:
   6. Testar a captura de pacotes SIP:
      sudo sngrep
 
+## Install WebDeveloper ##
+
+  yum install issabel-developer -y 
 
 ## Ajustes Tempo de Transferencia de Chamadas ##
 
