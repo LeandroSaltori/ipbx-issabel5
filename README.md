@@ -97,8 +97,17 @@ yum install issabel-developer -y
 
 https://wiki.asterisk.org/wiki/display/AST/Asterisk+13+Configuration_features
 
+## Install Report CDR ##
 
-
+  https://www.youtube.com/watch?v=6OVUhVTcm5I
+  
+  - Admin -> Administrador de Modulos
+  - Faça upload da pasta "asternic_cdr-1.6.6tgz
+  - Realize a instalação do Asternic CDR Reports
+  - Renomei a pasta asternic_cdr_OLD
+  - Envie as pastas com as alterações "asternic_cdr" para:
+      var/www/html/admin/modules
+  
 
 
 ## Como eu posso ajudar? ##
