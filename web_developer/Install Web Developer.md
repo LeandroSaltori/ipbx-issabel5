@@ -4,8 +4,8 @@
 
 yum install issabel-developer -y
 
-/var/www/html/modules/build_module ✅
+Copie e cole os arquivos corrigidos:
+    /var/www/html/modules/build_module ✅
+    /var/www/html/modules/delete_module ✅
+    /var/www/html/modules/language_admin ✅
 
-/var/www/html/modules/delete_module ✅
-
-/var/www/html/modules/language_admin ✅
