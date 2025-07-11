@@ -6,18 +6,22 @@ This is a patch and files for installing custom Isabel 5 Rock Linux by Prisma Te
 ### BR - Descrição: ###
 Este é um patch e arquivos para instalação do Issabel 5 no Rock Linux personalizada pela Prisma Telecom.
 
-  yum update
+  yum update -y && yum upgrade -y
   yum -y install wget
   yum -y install curl
+  yum -y install nano
   yum -y install net-tools
   dnf -y install NetworkManager NetworkManager-tui
   yum -y install tcpdump
+  sudo dnf install epel-release -y
+  yum -y install tmux
+  yum -y install bmon
   wget -O - http://repo.issabel.org/issabel5-netinstall.sh | bash
   curl http://repo.issabel.org/issabel5-netinstall.sh | bash
 
 ### Sobre ###}
   - Rock Linux 8  
-- Patch Prisma Telecom [https://github.com/LeandroSaltori/ipbx-issabel5/edit/main/README.md]
+  - Patch Prisma Telecom [https://github.com/LeandroSaltori/ipbx-issabel5/edit/main/README.md]
       - Instalação do Network Manager  
       - Instalação do TCP Dump   
       - Instalação do SNGREP
@@ -42,6 +46,20 @@ Este é um patch e arquivos para instalação do Issabel 5 no Rock Linux persona
    dnf install -y openssh-server
    systemctl enable sshd
    systemctl start sshd
+
+
+# Passo a passo para instalar o htop no Rocky Linux 8:
+Instale o repositório EPEL:
+sudo dnf install epel-release -y
+
+Atualize o cache do DNF (opcional, mas recomendado):
+sudo dnf makecache
+
+Agora instale o htop:
+sudo dnf install htop -y
+
+Execute o htop:
+htop
 
 # INSTALL EASY-VPN
   sudo dnf install nano -y
@@ -75,7 +93,8 @@ Se o pacote não for encontrado, ative o repositório COPR e tente novamente:
 
 ## Install WebDeveloper ##
 
-yum install issabel-developer -y 
+  - yum install issabel-developer -y 
+  - Copiar a pasta do web_developer corrigida para: 
 
 ## Ajustes Tempo de Transferencia de Chamadas ##
 
