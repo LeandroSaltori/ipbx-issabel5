@@ -1,58 +1,89 @@
 #!/bin/bash
-# Script para modificar o Address Book do Issabel
-# Autor: [Seu Nome]
-# Data: $(date +%Y-%m-%d)
+# Script de atualização do Address Book para Issabel 5
+# Autor: Leandro Saltori
+# Repositório: https://github.com/LeandroSaltori/ipbx-issabel5
 
 # Configurações
-MODULE_DIR="/var/www/html/modules/address_book"
-BACKUP_DIR="/root/address_book_backup_$(date +%Y%m%d%H%M%S)"
-TARGET_FILE="Contactmanager.class.php"
+ISSABEL_MODULES_DIR="/var/www/html/modules"
+ADDRESSBOOK_DIR="$ISSABEL_MODULES_DIR/address_book"
+BACKUP_DIR="$ISSABEL_MODULES_DIR/address_book_old_$(date +%Y%m%d%H%M%S)"
+GITHUB_REPO="https://github.com/LeandroSaltori/ipbx-issabel5/trunk/web/modules/address_book"
+LOG_FILE="/var/log/addressbook_update.log"
 
-# 1. Verificar se o módulo existe
-if [ ! -d "$MODULE_DIR" ]; then
-    echo "ERRO: Diretório do módulo não encontrado em $MODULE_DIR"
+# Função para registrar logs
+log() {
+    echo "[$(date '+%Y-%m-%d %H:%M:%S')] $1" | tee -a "$LOG_FILE"
+}
+
+# 1. Verificar ambiente
+log "=== INICIANDO ATUALIZAÇÃO DO ADDRESS BOOK ==="
+if [ ! -d "$ADDRESSBOOK_DIR" ]; then
+    log "ERRO: Diretório do Address Book não encontrado em $ADDRESSBOOK_DIR"
     exit 1
 fi
 
-# 2. Criar backup
-echo "Criando backup em $BACKUP_DIR..."
-mkdir -p "$BACKUP_DIR"
-cp "$MODULE_DIR/$TARGET_FILE" "$BACKUP_DIR/" || {
-    echo "ERRO: Falha ao criar backup"
+# 2. Parar serviços dependentes
+log "Parando serviços relacionados..."
+systemctl stop httpd asterisk
+
+# 3. Criar backup completo
+log "Criando backup da pasta atual..."
+if [ -d "$ADDRESSBOOK_DIR" ]; then
+    cp -rp "$ADDRESSBOOK_DIR" "$BACKUP_DIR" && \
+    log "Backup criado em: $BACKUP_DIR" || {
+        log "ERRO: Falha ao criar backup"
+        exit 1
+    }
+fi
+
+# 4. Baixar nova versão
+log "Baixando nova versão do GitHub..."
+TEMP_DIR=$(mktemp -d)
+svn export "$GITHUB_REPO" "$TEMP_DIR" --force >> "$LOG_FILE" 2>&1 || {
+    log "ERRO: Falha ao baixar do GitHub"
     exit 1
 }
 
-# 3. Aplicar modificações
-echo "Aplicando patch..."
+# 5. Remover versão antiga
+log "Removendo versão antiga..."
+rm -rf "$ADDRESSBOOK_DIR" || {
+    log "ERRO: Falha ao remover pasta antiga"
+    exit 1
+}
+
+# 6. Instalar nova versão
+log "Instalando nova versão..."
+mv "$TEMP_DIR" "$ADDRESSBOOK_DIR" && \
+chown -R apache:apache "$ADDRESSBOOK_DIR" && \
+chmod -R 755 "$ADDRESSBOOK_DIR" || {
+    log "ERRO: Falha na instalação"
+    exit 1
+}
+
+# 7. Aplicar customizações
+log "Aplicando customizações..."
 sed -i \
 -e "/'last_name' => array('required' => true)/s/true/false/" \
--e "/'last_name' => 'Sobrenome',/,/'name' => 'Nome'/ { /'last_name'/ { h; d }; /'name'/ { x; G } }" \
 -e "/\$smarty->assign('status',/s/'isPrivate'/'isPublic'/" \
-"$MODULE_DIR/$TARGET_FILE" || {
-    echo "ERRO: Falha ao aplicar modificações"
-    echo "Restaurando backup..."
-    cp "$BACKUP_DIR/$TARGET_FILE" "$MODULE_DIR/$TARGET_FILE"
+"$ADDRESSBOOK_DIR/Contactmanager.class.php"
+
+# 8. Validar instalação
+log "Validando instalação..."
+php -l "$ADDRESSBOOK_DIR/Contactmanager.class.php" >> "$LOG_FILE" 2>&1 || {
+    log "ERRO: Problema na sintaxe PHP - Restaurando backup..."
+    rm -rf "$ADDRESSBOOK_DIR"
+    mv "$BACKUP_DIR" "$ADDRESSBOOK_DIR"
     exit 1
 }
 
-# 4. Limpar cache
-echo "Limpando cache..."
-rm -f /tmp/smarty_compile/*
+# 9. Limpar cache
+log "Limpando cache..."
+rm -rf /tmp/smarty_compile/* /var/cache/issabel/*
 
-# 5. Testar sintaxe PHP
-echo "Verificando sintaxe PHP..."
-php -l "$MODULE_DIR/$TARGET_FILE" || {
-    echo "ERRO: Problema na sintaxe do arquivo modificado"
-    echo "Restaurando backup..."
-    cp "$BACKUP_DIR/$TARGET_FILE" "$MODULE_DIR/$TARGET_FILE"
-    exit 1
-}
+# 10. Reiniciar serviços
+log "Reiniciando serviços..."
+systemctl start httpd asterisk
 
-# 6. Ajustar permissões
-echo "Ajustando permissões..."
-chown apache:apache "$MODULE_DIR/$TARGET_FILE"
-chmod 644 "$MODULE_DIR/$TARGET_FILE"
-
-echo "Patch aplicado com sucesso!"
-echo "Reinicie o servidor web para garantir as alterações:"
-echo "systemctl restart httpd"
+log "=== ATUALIZAÇÃO CONCLUÍDA COM SUCESSO ==="
+echo "Detalhes completos em: $LOG_FILE"
+echo "Backup disponível em: $BACKUP_DIR"
