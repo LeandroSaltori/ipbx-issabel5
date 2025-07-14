@@ -1,0 +1,84 @@
+#!/bin/bash
+# Script corrigido para atualização do Address Book
+# Autor: Leandro Saltori
+# Versão: 2.0
+
+# Configurações
+ISSABEL_MODULES_DIR="/var/www/html/modules"
+ADDRESSBOOK_DIR="$ISSABEL_MODULES_DIR/address_book"
+BACKUP_DIR="$ISSABEL_MODULES_DIR/address_book_old_$(date +%Y%m%d%H%M%S)"
+GITHUB_REPO="https://github.com/LeandroSaltori/ipbx-issabel5"
+GITHUB_DIR="web/modules/address_book"
+LOG_FILE="/var/log/addressbook_update.log"
+
+# Função para registrar logs
+log() {
+    echo "[$(date '+%Y-%m-%d %H:%M:%S')] $1" | tee -a "$LOG_FILE"
+}
+
+# Iniciar processo
+log "=== INICIANDO ATUALIZAÇÃO DO ADDRESS BOOK ==="
+
+# 1. Verificar ambiente
+log "Verificando pré-requisitos..."
+[ -d "$ISSABEL_MODULES_DIR" ] || {
+    log "ERRO: Diretório de módulos não encontrado"
+    exit 1
+}
+
+# 2. Instalar dependências se necessário
+if ! command -v git &>/dev/null; then
+    log "Instalando git..."
+    yum install -y git >> "$LOG_FILE" 2>&1 || {
+        log "ERRO: Falha ao instalar git"
+        exit 1
+    }
+fi
+
+# 3. Criar backup
+log "Criando backup em $BACKUP_DIR..."
+cp -rp "$ADDRESSBOOK_DIR" "$BACKUP_DIR" >> "$LOG_FILE" 2>&1 || {
+    log "ERRO: Falha ao criar backup"
+    exit 1
+}
+
+# 4. Baixar nova versão
+log "Clonando repositório do GitHub..."
+TEMP_DIR=$(mktemp -d)
+git clone --depth 1 --branch main "$GITHUB_REPO" "$TEMP_DIR" >> "$LOG_FILE" 2>&1 || {
+    log "ERRO: Falha ao clonar repositório"
+    rm -rf "$TEMP_DIR"
+    exit 1
+}
+
+# 5. Instalar nova versão
+log "Instalando nova versão..."
+rm -rf "$ADDRESSBOOK_DIR" && \
+mv "$TEMP_DIR/$GITHUB_DIR" "$ADDRESSBOOK_DIR" && \
+rm -rf "$TEMP_DIR" || {
+    log "ERRO: Falha na instalação - Restaurando backup"
+    rm -rf "$ADDRESSBOOK_DIR"
+    mv "$BACKUP_DIR" "$ADDRESSBOOK_DIR"
+    exit 1
+}
+
+# 6. Aplicar customizações
+log "Aplicando customizações..."
+sed -i \
+-e "/'last_name' => array('required' => true)/s/true/false/" \
+-e "/\$smarty->assign('status',/s/'isPrivate'/'isPublic'/" \
+"$ADDRESSBOOK_DIR/Contactmanager.class.php"
+
+# 7. Ajustar permissões
+log "Ajustando permissões..."
+chown -R apache:apache "$ADDRESSBOOK_DIR"
+find "$ADDRESSBOOK_DIR" -type f -exec chmod 644 {} \;
+find "$ADDRESSBOOK_DIR" -type d -exec chmod 755 {} \;
+
+# 8. Limpar cache
+log "Limpando cache..."
+rm -rf /tmp/smarty_compile/* /var/cache/issabel/*
+
+log "=== ATUALIZAÇÃO CONCLUÍDA COM SUCESSO ==="
+echo "Log completo disponível em: $LOG_FILE"
+echo "Backup disponível em: $BACKUP_DIR"
