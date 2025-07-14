@@ -102,7 +102,6 @@ Se o pacote não for encontrado, ative o repositório COPR e tente novamente:
 
   e adicione as linhas:
 ```
-
     transferdigittimeout=6
     featuredigittimeout=3000
     atxfernoanswertimeout=35
@@ -127,6 +126,11 @@ https://wiki.asterisk.org/wiki/display/AST/Asterisk+13+Configuration_features
   - Envie as pastas com as alterações "asternic_cdr" para:
       var/www/html/admin/modules
   
+## Alterar User Agente Issabel
+
+etc/asterisk/pjsip.conf
+user_agent = user_agent=IPbx-Prisma
+
 
 
 ## Como eu posso ajudar? ##

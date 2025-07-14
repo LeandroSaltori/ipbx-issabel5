@@ -93,3 +93,6 @@ sudo chown -R asterisk:asterisk /var/www/html/phpmyadmin
 sudo systemctl restart httpd
 
 Acessar painel WEB, usuario root senha do sql
+
+# Enviar arquivos
+ /var/lib/asterisk/sounds/custom
