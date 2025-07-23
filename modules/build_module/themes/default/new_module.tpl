@@ -12,7 +12,7 @@
   </tr>
   <tr>
     <td>
-      <table class="tabForm" style="font-size: 16px;" width="100%">
+      <table class="tabForm" style="font-size: 16px;" width="99%">
         <tr class="letra12">
          <td align="left" width="17%"><b>{$module_name_label}: <span  class="required">*</span></b></td>
          <td align="left" width="22%"><input type='text' name='module_name' id='module_name' value='' onkeyup='generateId(this,"id_module")'></td>
@@ -50,7 +50,7 @@
   </tr>
   <tr>
     <td>
-       <table class="tabForm" style="font-size: 16px;" width="100%" >
+       <table class="tabForm" style="font-size: 16px;" width="99%" >
         <tr class="letra12">
           <td width="17%" align="left"><b>{$module_level}: <span  class="required">*</span></b></td>
           <td align="left">
@@ -95,7 +95,7 @@
   </tr>
   <tr>
     <td>
-       <table class="tabForm" style="font-size: 16px;" width="100%">
+       <table class="tabForm" style="font-size: 16px;" width="99%">
      
        <tr class="letra12">
         <td width="17%" align="left"><b>{$module_type}: <span  class="required">*</span></b></td>

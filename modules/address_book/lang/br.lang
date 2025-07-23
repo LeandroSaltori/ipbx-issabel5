@@ -1,106 +1,99 @@
 <?php
 /* vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4:
-  CodificaciÃ³n: UTF-8
+  Codificacao: UTF-8
   +----------------------------------------------------------------------+
-  | Issabel version 4.0                                                  |
+  | Issabel versao 4.0                                                   |
   | http://www.issabel.org                                               |
   +----------------------------------------------------------------------+
+  | Copyright (c) 2019 Issabel Foundation                                |
   | Copyright (c) 2006 Palosanto Solutions S. A.                         |
   +----------------------------------------------------------------------+
-  | The contents of this file are subject to the General Public License  |
-  | (GPL) Version 2 (the "License"); you may not use this file except in |
-  | compliance with the License. You may obtain a copy of the License at |
-  | http://www.opensource.org/licenses/gpl-license.php                   |
+  | Os conteudos deste arquivo estao sujeitos a Licenca Publica Geral    |
+  | (GPL) Versao 2 (a "Licenca"); voce nao pode usar este arquivo exceto |
+  | em conformidade com a Licenca. Voce pode obter uma copia da Licenca  |
+  | em http://www.opensource.org/licenses/gpl-license.php                |
   |                                                                      |
-  | Software distributed under the License is distributed on an "AS IS"  |
-  | basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See  |
-  | the License for the specific language governing rights and           |
-  | limitations under the License.                                       |
+  | O software distribuido sob a Licenca e distribuido "COMO ESTA",      |
+  | SEM GARANTIA DE QUALQUER TIPO, expressa ou implicita. Veja a         |
+  | Licenca para a linguagem especifica que rege os direitos e           |
+  | limitacoes sob a Licenca.                                            |
   +----------------------------------------------------------------------+
-  | The Initial Developer of the Original Code is PaloSanto Solutions    |
-  |                                                                      |
-  | Translate by: Leandro - Prisma Telecom                               |
-  | Email:leandro@prismatelecom.com                                      |
+  | O Desenvolvedor Inicial do Codigo Original e PaloSanto Solutions     |
+  | Traduzido por: [Seu Nome]                                            |
+  | Email: [seu-email@exemplo.com]                                       |
   +----------------------------------------------------------------------+
-  $Id: br.lang,v 1.7 2024/10/23 09:49:00 bmacias Exp $ */
+  $Id: pt_BR.lang,v 1.0 2023-01-01 00:00:00 tradutor Exp $ */
 global $arrLangModule;
-$arrLangModule=array(
-"New Contact"	=> "Novo Contato",
-"Address Book"	=> "Address Book",
-"Are you sure you wish to delete the contact." => "Tem certeza de que deseja excluir o contato.",
-"First Name"	=> "Sobrenome",
-"Last Name"	=> "Nome",
-"Phone Number"	=> "Número de telefone",
-"Extension" => "Ramal",
-"The call couldn't be realized" => "A chamada não pôde ser realizada",
-"Internal" => "Interno",
-"External" => "Externo",
-"Phone Directory" => "Agenda",
-"CSV" => "CSV",
-"Download Address Book" => "Baixar Agenda",
-"Can't exist a Name empty. Line" => "Não pode existir um Nome vazio.",
-"Can't exist a Last Name empty. Line" => "Não pode existir um Sobrenome vazio.",
-"Can't exist a Phone Number/Job Phone Number empty. Line" => "Não é possível existir um numero de telefone/número de telefone do vazio",
-"Total contacts created" => "Total de contatos criados",
-"Contact Data already exists" => "Os dados de contato já existem",
-"Header File Address Book" => "O cabecalho do arquivo deve estar na primeira linha e deve ter pelo menos tres colunas: Nome, Sobrenome, Numero de telefone",
-"About Address Book" => "Se você carregar um arquivo com dados de contatos já criados, esses dados de contato não serão importados",
-"Invalid file extension.- It must be csv" => "Extensão de arquivo inválida.- Deve ser csv",
-"There aren't contacts" => "Não há contatos",
-"Address Book from CSV" => "Importar Lista de Contatos Exel(.CSV)",
-"Name" => "Nome",
-"Filter" => "Filtro",
-"Show" => "Pesquisar",
-"Email" => "Email",
-"File" => "Arquivo",
-"Possible file upload attack. Filename" => "Possível ataque de upload de arquivo. Nome do arquivo",
-"Please read the lines in the footer" => "Por favor, leia as linhas no rodapé",
-"Verify the header" => "Verifique o cabeçalho",
-"At minimum there must be the columns" => "No mínimo deve haver as colunas",
-"Incomplete Columns" => "Colunas Incompletas",
-"The file is incorrect or empty" => "O arquivo está incorreto ou vazio",
-"You don't have extension number associated with user" => "Nao ha numero de ramal associado ao usuario atual. Voce pode associar um numero de ramal ao seu usuario clicando em <a href=\"javascript: openWindow('index.php?menu=userlist&amp;action=edit_userExtension&amp;rawmode=yes');\">aqui!</a>",
-"ERROR" => "ERROR",
-"Transfer" => "",
-"The transfer couldn't be realized, maybe you don't have any conversation now." => "A transferência não foi realizada, talvez voce nao tenha nenhuma conversa agora.",
-"Not_allowed_change" => "Essas alterações não são permitidas para seu usuário. Este contato não está associado ao seu catálogo de endereços",
-"picture" => "Foto",
-"Address" => "Endereço",
-"Company" => "Empresa",
-"Notes" => "Notas",
-"Status" => "Status",
-"Private Contact" => "Contato Privado",
-"Public Contact" => "Contato Publico",
-"Invalid file extension.- It must be png or jpg or jpeg" => "Extensão de arquivo inválida.- Deve ser png, jpg ou jpeg sem caracteres especiais",
-"Validation Error" => "Erro de validacao",
-"Error to Upload" => "Erro ao carregar o arquivo",
-"Type Contact" => "Tipo Contato",
-"Internal Error" => "Por favor, certifique-se se os parâmetros estão corretos",
-"Not_allowed_contact" => "Este contato não existe na sua agenda",
-"Public editable" => "Contato público editável",
-"Public not editable" => "Contato público não editável",
-"Private" => "Privado",
-"contact_admin" => " Nao ha numero de ramal associado ao usuário atual. Entre em contato com o administrador para atribuir uma extensao",
-"Work's Phone Number" => "Telefone",
-"Cell Phone Number (SMS)" => "Celular",
-
-"Address IM (XMPP, Openfire)" => "Endereço IM",
-"Home Phone Number" => "Tel 1",
-"FAX Number 1" => "Tel 1",
-"FAX Number 2" => "Tel 3",
-"Address" => "Endereco",
-"Province" => "Estado",
-"City" => "Cidade",
-"Contact person in your Company" => "Pessoa de contato da empresa",
-"Contact person's current position" => "Cargo atual do contato",
-"Call" => "Ligar",
-"Manager" => "Setor",
-"Current position" => "Cargo Atual",
-"MESSAGE" => "Atencao",
-
-"telefono" => "Telefone",
-
-
-
-);
+$arrLangModule = array(
+    "New Contact" => "Novo Contato",
+    "Address Book" => "Agenda Telefonica",
+    "Are you sure you wish to delete the contact." => "Tem certeza que deseja excluir este contato?",
+    "First Name" => "Nome",
+    "Last Name" => "Sobrenome",
+    "Phone Number" => "Numero de Telefone",
+    "Extension" => "Ramal",
+    "The call couldn't be realized" => "A chamada nao pode ser realizada",
+    "Internal" => "Interno",
+    "External" => "Externo",
+    "Call" => "Chamar",
+    "Phone Directory" => "Lista Telefonica",
+    "CSV" => "CSV",
+    "Download Address Book" => "Baixar Agenda Telefonica",
+    "Can't exist a Name empty. Line" => "O campo Nome nao pode estar vazio. Linha",
+    "Can't exist a Last Name empty. Line" => "O campo Sobrenome nao pode estar vazio. Linha",
+    "Can't exist a Phone Number/Job Phone Number empty. Line" => "O campo Telefone/Telefone Comercial nao pode estar vazio. Linha",
+    "Total contacts created" => "Total de contatos criados",
+    "Contact Data already exists" => "Os dados do contato ja existem",
+    "Header File Address Book" => "O cabecalho do arquivo deve conter no minimo tres colunas: Nome, Sobrenome, Telefone",
+    "About Address Book" => "Contatos ja existentes no sistema nao serao importados novamente",
+    "Invalid file extension.- It must be csv" => "Extensao de arquivo invalida - deve ser CSV",
+    "There aren't contacts" => "Nao ha contatos cadastrados",
+    "Address Book from CSV" => "Importar Agenda de arquivo CSV",
+    "Name" => "Nome",
+    "Filter" => "Filtrar",
+    "Show" => "Mostrar",
+    "Email" => "E-mail",
+    "File" => "Arquivo",
+    "Possible file upload attack. Filename" => "Possivel tentativa de ataque via upload. Arquivo",
+    "Please read the lines in the footer" => "Por favor, leia as instrucoes no rodape",
+    "Verify the header" => "Verifique o cabecalho",
+    "At minimum there must be the columns" => "Devem existir no minimo as colunas",
+    "Incomplete Columns" => "Colunas incompletas",
+    "The file is incorrect or empty" => "O arquivo esta incorreto ou vazio",
+    "You don't have extension number associated with user" => "Nao ha ramal associado ao seu usuario",
+    "ERROR" => "ERRO",
+    "Transfer" => "Transferir",
+    "The transfer couldn't be realized, maybe you don't have any conversation now." => "A transferencia nao pode ser realizada - voce pode nao estar em uma chamada ativa",
+    "Not_allowed_change" => "Voce nao tem permissao para modificar este contato",
+    "picture" => "Foto",
+    "Address" => "Endereco",
+    "Company" => "Empresa",
+    "Notes" => "Observacoes",
+    "Status" => "Status",
+    "Private Contact" => "Contato Privado",
+    "Public Contact" => "Contato Publico",
+    "Invalid file extension.- It must be png or jpg or jpeg" => "Extensao invalida - deve ser PNG, JPG ou JPEG",
+    "Validation Error" => "Erro de Validacao",
+    "Error to Upload" => "Erro ao Enviar",
+    "Type Contact" => "Tipo de Contato",
+    "Internal Error" => "Erro Interno",
+    "Not_allowed_contact" => "Contato nao disponivel em sua agenda",
+    "Public editable" => "Publico (editavel)",
+    "Public not editable" => "Publico (nao editavel)",
+    "Private" => "Privado",
+    "Work's Phone Number" => "Telefone/Celular",
+    "Cell Phone Number (SMS)" => "Celular ",
+    "Home Phone Number" => "Telefone Residencial",
+    "FAX Number 1" => "Tel 1 (Opcional)",
+    "FAX Number 2" => "Tel 2 (Opcional)",
+    "Province" => "Estado",
+    "Contact person in your Company" => "Pessoa de Contato na Empresa",
+    "Contact person's current position" => "Cargo da Pessoa de Contato",
+    "City" => "Cidade",
+    "Filter applied" => "Filtro aplicado",
+    "Notes" => "Observacoes",
+    "Manager" => "Contato Empresa",
+    "Current position" => "Cargo",
+    "Address IM (XMPP, Openfire)" => "Skype",
+   );
 ?>

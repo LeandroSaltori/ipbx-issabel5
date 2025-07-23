@@ -6022,8 +6022,8 @@ msgstr "Logotipo no rodapé. O caminho é relativo ao gerente."
 msgid "Link for Footer Logo"
 msgstr "Link do logotipo do rodapé"
 
-msgid "link to follow when clicking on logo, defaults to http://www.issabel.org"
-msgstr "link a seguir ao clicar no logotipo, o padrão é http://www.issabel.org"
+msgid "link to follow when clicking on logo, defaults to http://www.prismatelecom.com"
+msgstr "link a seguir ao clicar no logotipo, o padrão é http://www.prismatelecom.com"
 
 msgid "Link for Left Logo"
 msgstr "Link para o logotipo esquerdo"

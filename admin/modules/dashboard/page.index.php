@@ -634,6 +634,8 @@ if (!$quietmode) {
     <?php
     echo '<div id="sysinfo-left">';
 
+// PAGINA ISSABEL NOTICIAS
+/*
     // regular page
     echo '<div id="syslog" class="infobox ui-widget-content  ui-corner-all">';
     echo show_syslog($syslog_md5);
@@ -641,6 +643,8 @@ if (!$quietmode) {
     echo '<script type="text/javascript"> syslog_md5 = "'.$syslog_md5.'"; </script>';
     //echo "log goes here<br/><br/><br/>";
     echo '</div>';
+*/
+// FIM PAGINA ISSABEL NOTICIAS
 
     echo '<div id="aststats" class="infobox ui-widget-content  ui-corner-all">';
     echo show_aststats();

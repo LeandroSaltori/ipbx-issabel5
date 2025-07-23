@@ -1,6 +1,6 @@
 <?php
 
-printf( "<h1 class='title'>%s</h1>", __("Welcome to IssabelPBX.") );
+printf( "<h1 class='title'>%s</h1>", __("Welcome to IPbxPrisma.") );
 	
 $notify =& notifications::create($db);
 $items = $notify->list_all(true);

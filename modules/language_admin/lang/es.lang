@@ -27,7 +27,7 @@
 global $arrLangModule;
 $arrLangModule=array(
 "Language Admin" => "Admin Lenguages",
-"New Language" => "Nuevo Lenguage",
+"New Language" => "Nuevo Lenguaje",
 "New Traslate" => "Nueva Traducción",
 "Select Module" => "Elija Módulo",
 "Select Language" => "Elija Lenguage",

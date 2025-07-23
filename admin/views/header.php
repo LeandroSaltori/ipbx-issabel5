@@ -101,8 +101,8 @@ $html .= '<div id="page">';//open page
 //add script warning
 $html .= '<noscript><div class="attention">'
 		. __('WARNING: Javascript is disabled in your browser. '
-		. 'The IssabelPBX administration interface requires Javascript to run properly. '
-		. 'Please enable javascript or switch to another  browser that supports it.') 
+		. 'A interface de administração do IPbx Prisma requer Javascript para funcionar corretamente. '
+		. 'Por favor, habilite o javascript ou mude para outro navegador que o suporte.') 
 		. '</div></noscript>';
 
 echo $html;

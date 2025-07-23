@@ -8,7 +8,7 @@
         <td align="right" nowrap><span class="letra12"><span  class="required">*</span> {$REQUIRED_FIELD}</span></td>
     </tr>
 </table>
-<table class="tabForm" style="font-size: 16px;" width="100%" >
+<table class="tabForm" style="font-size: 16px;" width="99%" >
     <tr class="letra12">
         <td align="left" width="12%"><b>{$Delete_Menu}:</b></td>
         <td width="30%"><input type="checkbox" name="delete_menu" id="delete_menu" checked='checked' /></td>
