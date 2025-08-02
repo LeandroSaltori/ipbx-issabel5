@@ -2,7 +2,7 @@
 header('Content-Type: application/json; charset=utf-8');
 
 // Conexão com o banco de dados
-$conn = new mysqli("localhost", "root", "ls251289", "asterisk");
+$conn = new mysqli("localhost", "root", "[SUASENHAAQUI]", "asterisk");
 if ($conn->connect_error) {
     die(json_encode(["error" => "Erro na conexão: " . $conn->connect_error]));
 }
