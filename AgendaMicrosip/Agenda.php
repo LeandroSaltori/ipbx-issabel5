@@ -1,78 +1,93 @@
 <?php
 header('Content-Type: application/json; charset=utf-8');
 
-// Conexão com o banco de dados
-$conn = new mysqli("localhost", "root", "[SUASENHAAQUI]", "asterisk");
-if ($conn->connect_error) {
-    die(json_encode(["error" => "Erro na conexão: " . $conn->connect_error]));
+// 1. Conexão com MySQL (Ramais internos)
+$mysql = new mysqli("localhost", "root", "[SUASENHAAQUI]", "asterisk");
+if ($mysql->connect_error) {
+    die(json_encode(["error" => "Erro MySQL: ".$mysql->connect_error]));
 }
 
-// 1. CONSULTA DE STATUS COM FALLBACK ROBUSTO
-$presence = [];
-$tables = ['sip_peers', 'ast_sip_peers', 'ps_endpoints']; // Tabelas possíveis
-
-foreach ($tables as $table) {
-    $check_table = $conn->query("SHOW TABLES LIKE '$table'");
-    if ($check_table->num_rows > 0) {
-        $sql = "SELECT 
-                    id as extension, 
-                    CASE 
-                        WHEN status IN ('OK', '5', 'Reachable') THEN 1 
-                        ELSE 0 
-                    END as online_status
-                FROM $table 
-                WHERE id REGEXP '^[0-9]{2,4}$'";
-        
-        $result = $conn->query($sql);
-        if ($result) {
-            while ($row = $result->fetch_assoc()) {
-                $presence[$row['extension']] = $row['online_status'];
-            }
-            break; // Usa a primeira tabela válida encontrada
-        }
-    }
-}
-
-// 2. CONSULTA DE RAMAIS COM PRESENÇA GARANTIDA
+// 2. Busca de ramais internos
 $items = [];
-$result = $conn->query("
+$result = $mysql->query("
     SELECT extension AS number, name 
     FROM users 
     WHERE extension REGEXP '^[0-9]{2,4}$'
-    ORDER BY extension ASC
+    ORDER BY name ASC
 ");
 
-if ($result->num_rows > 0) {
-    while ($row = $result->fetch_assoc()) {
-        // Garante presença = 1 para ramais ativos
-        $is_online = isset($presence[$row['number']]) ? $presence[$row['number']] : 0;
+while ($row = $result->fetch_assoc()) {
+    // Separa primeiro e último nome
+    $name_parts = explode(' ', $row['name'], 2);
+    $firstname = $name_parts[0] ?? '';
+    $lastname = $name_parts[1] ?? '';
+    
+    $items[] = [
+        "number"    => $row['number'],
+        "name"      => $row['name'] ?: "Ramal ".$row['number'],
+        "firstname" => $firstname,
+        "lastname"  => $lastname,
+        "phone"     => $row['number'],
+        "mobile"    => "",
+        "email"     => "",
+        "address"   => "",
+        "city"      => "",
+        "state"     => "",
+        "zip"       => "",
+        "comment"   => "Ramal interno",
+        "presence"  => 1,
+        "starred"   => 1,
+        "info"      => "Ramal do sistema"
+    ];
+}
+
+// 3. Conexão com SQLite (Contatos externos)
+$sqlite_path = '/var/www/db/address_book.db';
+if (file_exists($sqlite_path)) {
+    try {
+        $sqlite = new SQLite3($sqlite_path);
         
-        // Força presença = 1 para teste (remova depois de confirmar)
-        $is_online = 1; // REMOVA ESTA LINHA DEPOIS DE TESTAR
+        // Consulta adaptada para pegar todos os campos disponíveis
+        $result = $sqlite->query("
+            SELECT name, last_name, telefono AS number, cell_phone AS mobile, 
+                   email, address, city, province AS state, notes AS comment,
+                   company, company_contact, contact_rol, department
+            FROM contact 
+            WHERE directory = 'external' AND telefono != ''
+            ORDER BY name ASC
+        ");
         
-        $items[] = [
-            "number" => $row["number"],
-            "name" => $row["name"] ?: "Ramal " . $row["number"],
-            "phone" => $row["number"],
-            "presence" => $is_online,
-            "starred" => 1,
-            "info" => "Ramal do sistema"
-        ];
+        while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
+            $items[] = [
+                "number"      => $row['number'],
+                "name"       => trim($row['name'].' '.$row['last_name']),
+                "firstname"  => $row['name'],
+                "lastname"   => $row['last_name'],
+                "phone"      => $row['number'],
+                "mobile"     => $row['mobile'],
+                "email"      => $row['email'],
+                "address"    => $row['address'],
+                "city"       => $row['city'],
+                "state"      => $row['state'],
+                "zip"        => "", // Não existe no schema
+                "comment"    => $row['comment']."\nEmpresa: ".$row['company']."\nContato: ".$row['company_contact']."\nCargo: ".$row['contact_rol']."\nDepartamento: ".$row['department'],
+                "presence"   => 0,
+                "starred"    => 0,
+                "info"       => "Contato externo"
+            ];
+        }
+    } catch (Exception $e) {
+        file_put_contents('/tmp/agenda_errors.log', date('[Y-m-d H:i:s] ').$e->getMessage().PHP_EOL, FILE_APPEND);
     }
 }
 
-// 3. SAÍDA COM CONTROLE DE ERROS
-try {
-    echo json_encode([
-        "refresh" => 300,
-        "items" => $items
-    ], JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
-} catch (Exception $e) {
-    die(json_encode([
-        "error" => "Erro ao gerar JSON",
-        "details" => $e->getMessage()
-    ]));
-}
+// 4. Saída JSON formatada para MicroSIP
+echo json_encode([
+    "refresh" => 1, // 5 minutos
+    "items"   => $items
+], JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
 
-$conn->close();
+// Fechar conexões
+$mysql->close();
+if (isset($sqlite)) $sqlite->close();
 ?>
