@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Monitor de Ramais</title>
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:      #0a0e14;
+  --surf:    #111822;
+  --surf2:   #162030;
+  --border:  #1e2d3d;
+  --accent:  #00d4ff;
+  --green:   #00ff9d;
+  --red:     #ff4466;
+  --orange:  #ff9533;
+  --yellow:  #ffd166;
+  --text:    #cdd9e5;
+  --muted:   #4a6070;
+  --font-m:  'IBM Plex Mono', monospace;
+  --font-s:  'IBM Plex Sans', sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:var(--font-s);min-height:100vh;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:44px 44px;opacity:.2;pointer-events:none;z-index:0}
+
+.wrap{position:relative;z-index:1;max-width:1600px;margin:0 auto;padding:0 24px 60px}
+
+/* Header */
+header{display:flex;align-items:flex-end;justify-content:space-between;padding:32px 0 24px;border-bottom:1px solid var(--border);flex-wrap:wrap;gap:12px}
+.logo .eye{font-family:var(--font-m);font-size:10px;letter-spacing:.2em;color:var(--accent);text-transform:uppercase;margin-bottom:5px}
+.logo h1{font-size:26px;font-weight:600;color:#fff;letter-spacing:-.5px}
+.logo h1 span{color:var(--accent)}
+.hmeta{text-align:right;font-family:var(--font-m);font-size:11px;color:var(--muted);line-height:1.9}
+.hmeta b{color:var(--text)}
+
+/* Stats */
+.stats{display:flex;gap:14px;margin:24px 0;flex-wrap:wrap}
+.sc{flex:1;min-width:140px;background:var(--surf);border:1px solid var(--border);border-radius:8px;padding:16px 20px;position:relative;overflow:hidden}
+.sc::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--accent)}
+.sc.g::before{background:var(--green)}
+.sc.r::before{background:var(--red)}
+.sc.o::before{background:var(--orange)}
+.sc.y::before{background:var(--yellow)}
+.sc-lbl{font-family:var(--font-m);font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.sc-val{font-family:var(--font-m);font-size:28px;font-weight:600;color:#fff;line-height:1}
+.sc.g .sc-val{color:var(--green)}
+.sc.r .sc-val{color:var(--red)}
+
+/* Controls */
+.controls{display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap;align-items:center}
+.sb{flex:1;min-width:200px;position:relative}
+.sb input{width:100%;background:var(--surf);border:1px solid var(--border);border-radius:6px;padding:9px 12px 9px 36px;color:var(--text);font-family:var(--font-m);font-size:13px;outline:none;transition:border-color .2s}
+.sb input:focus{border-color:var(--accent)}
+.sb input::placeholder{color:var(--muted)}
+.sb::before{content:'⌕';position:absolute;left:11px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:16px;pointer-events:none}
+.fb{background:var(--surf);border:1px solid var(--border);border-radius:6px;padding:9px 14px;color:var(--muted);font-family:var(--font-m);font-size:11px;cursor:pointer;transition:all .2s;white-space:nowrap;letter-spacing:.04em}
+.fb:hover,.fb.on{border-color:var(--accent);color:var(--accent)}
+.rb{background:var(--accent);border:none;border-radius:6px;padding:9px 18px;color:#000;font-family:var(--font-m);font-size:12px;font-weight:600;cursor:pointer;transition:opacity .2s;letter-spacing:.05em}
+.rb:hover{opacity:.85}
+.rb:disabled{opacity:.4;cursor:not-allowed}
+.eb{background:#1a6e3c;border:1px solid #1e9e52;border-radius:6px;padding:9px 18px;color:#fff;font-family:var(--font-m);font-size:12px;font-weight:600;cursor:pointer;transition:opacity .2s;letter-spacing:.05em}
+.eb:hover{opacity:.85}
+.eb:disabled{opacity:.4;cursor:not-allowed}
+
+/* Table */
+.tw{background:var(--surf);border:1px solid var(--border);border-radius:10px;overflow:hidden}
+.th-row{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid var(--border)}
+.th-title{font-family:var(--font-m);font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted)}
+.rc{font-family:var(--font-m);font-size:11px;color:var(--muted)}
+
+table{width:100%;border-collapse:collapse}
+thead th{padding:11px 14px;text-align:left;font-family:var(--font-m);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--border);white-space:nowrap;cursor:pointer;user-select:none}
+thead th:hover{color:var(--text)}
+thead th.srt{color:var(--accent)}
+tbody tr{border-bottom:1px solid rgba(30,45,61,.5);transition:background .15s}
+tbody tr:last-child{border-bottom:none}
+tbody tr:hover{background:rgba(0,212,255,.04)}
+tbody tr.hide{display:none}
+td{padding:12px 14px;font-family:var(--font-m);font-size:12px;vertical-align:middle}
+
+.t-ext{font-size:15px;font-weight:600;color:#fff}
+.t-ip{color:var(--text)}
+.t-port{color:var(--muted);font-size:10px;margin-left:3px}
+.t-mac{color:var(--accent);letter-spacing:.04em}
+.t-mac.none{color:var(--muted)}
+
+/* Badge status */
+.badge{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:100px;font-size:10px;font-weight:500;letter-spacing:.04em}
+.badge.ok{background:rgba(0,255,157,.1);color:var(--green)}
+.badge.fail{background:rgba(255,68,102,.1);color:var(--red)}
+.badge::before{content:'';width:5px;height:5px;border-radius:50%;background:currentColor}
+.badge.ok::before{animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+
+/* Chip fabricante */
+.chip{display:inline-block;padding:2px 8px;border-radius:4px;font-size:10px;font-family:var(--font-m);letter-spacing:.04em;font-weight:500}
+.chip-fly  {background:rgba(0,212,255,.12);color:var(--accent)}
+.chip-grand{background:rgba(255,213,102,.12);color:var(--yellow)}
+.chip-yea  {background:rgba(0,255,157,.12);color:var(--green)}
+.chip-fan  {background:rgba(255,149,51,.12);color:var(--orange)}
+.chip-poly {background:rgba(138,99,255,.15);color:#b48bff}
+.chip-cis  {background:rgba(30,144,255,.12);color:#6abaff}
+.chip-soft {background:rgba(74,96,112,.2);color:var(--muted)}
+.chip-other{background:rgba(74,96,112,.15);color:var(--muted)}
+
+/* UA tooltip */
+.ua-wrap{position:relative;display:inline-block;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;cursor:help;color:var(--muted);font-size:10px;vertical-align:middle}
+.ua-wrap:hover::after{content:attr(data-ua);position:absolute;left:0;top:100%;background:#1a2535;border:1px solid var(--border);border-radius:6px;padding:6px 10px;font-size:11px;color:var(--text);white-space:nowrap;z-index:99;margin-top:4px;box-shadow:0 8px 24px rgba(0,0,0,.5)}
+
+/* Estado carregando/erro */
+.state{text-align:center;padding:56px 20px;font-family:var(--font-m);color:var(--muted)}
+.spin{width:26px;height:26px;border:2px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 14px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.err-icon{font-size:36px;margin-bottom:12px}
+.err-msg{font-size:13px}
+.err-det{font-size:11px;margin-top:6px;color:var(--red)}
+
+footer{margin-top:36px;padding-top:18px;border-top:1px solid var(--border);display:flex;justify-content:space-between;font-family:var(--font-m);font-size:10px;color:var(--muted);flex-wrap:wrap;gap:8px}
+
+@media(max-width:900px){.col-ua,.col-fab{display:none}}
+@media(max-width:680px){.col-port,.col-type{display:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="logo">
+    <div class="eye">Monitor de Ramais</div>
+    <h1><img src="/favicon.ico" alt="" style="width:28px;height:28px;vertical-align:middle;margin-right:10px;border-radius:4px;">Monitor de <span>Ramais</span></h1>
+  </div>
+  <div class="hmeta" id="hmeta">Conectando...</div>
+</header>
+
+<div class="stats">
+  <div class="sc">    <div class="sc-lbl">Total Ramais</div><div class="sc-val" id="s-tot">—</div></div>
+  <div class="sc g">  <div class="sc-lbl">Registrados</div><div class="sc-val" id="s-reg">—</div></div>
+  <div class="sc r">  <div class="sc-lbl">Não Registrados</div><div class="sc-val" id="s-unr">—</div></div>
+  <div class="sc o">  <div class="sc-lbl">Com MAC</div><div class="sc-val" id="s-mac">—</div></div>
+  <div class="sc y">  <div class="sc-lbl">Fabricantes</div><div class="sc-val" id="s-fab">—</div></div>
+</div>
+
+<div class="controls">
+  <div class="sb"><input type="text" id="search" placeholder="Buscar ramal, IP, MAC, modelo..." oninput="applyFilters()"></div>
+  <button class="fb on" id="f-all"  onclick="setFilter('all')">Todos</button>
+  <button class="fb"    id="f-reg"  onclick="setFilter('reg')">Registrados</button>
+  <button class="fb"    id="f-unr"  onclick="setFilter('unr')">Não Reg.</button>
+  <button class="fb"    id="f-mac"  onclick="setFilter('mac')">Com MAC</button>
+  <button class="rb"    id="rbtn"   onclick="loadData()">↻ Atualizar</button>
+  <button class="eb"    id="ebtn"   onclick="exportExcel()">⬇ Exportar Excel</button>
+</div>
+
+<div class="tw">
+  <div class="th-row">
+    <span class="th-title">Lista de Ramais</span>
+    <span class="rc" id="rc">—</span>
+  </div>
+  <div id="tbox">
+    <div class="state"><div class="spin"></div><div>Conectando ao AMI...</div></div>
+  </div>
+</div>
+
+<footer>
+  <span>IPbx Prisma Monitor v2.0 - Todos os direitos reservados</span>
+  <span id="fts">?</span>
+</footer>
+</div>
+
+<script>
+var allData = [];
+var curFilter = 'all';
+var sortCol = 'ramal';
+var sortAsc = true;
+var API = 'ami_api.php';
+
+function chipClass(fab) {
+  if (!fab || fab === '-') return 'chip-other';
+  var f = fab.toLowerCase();
+  if (f.indexOf('flying') !== -1) return 'chip-fly';
+  if (f.indexOf('grand')  !== -1) return 'chip-grand';
+  if (f.indexOf('yealink')!== -1) return 'chip-yea';
+  if (f.indexOf('fanvil') !== -1) return 'chip-fan';
+  if (f.indexOf('poly')   !== -1) return 'chip-poly';
+  if (f.indexOf('cisco')  !== -1 || f.indexOf('linksys') !== -1) return 'chip-cis';
+  if (f.indexOf('zoiper') !== -1 || f.indexOf('microsip')!== -1 ||
+      f.indexOf('soft')   !== -1 || f.indexOf('3cx')     !== -1 ||
+      f.indexOf('android')!== -1 || f.indexOf('bria')    !== -1) return 'chip-soft';
+  return 'chip-other';
+}
+
+function loadData() {
+  var btn = document.getElementById('rbtn');
+  btn.disabled = true; btn.textContent = '↻ Carregando...';
+  document.getElementById('tbox').innerHTML = '<div class="state"><div class="spin"></div><div>Coletando dados...</div></div>';
+
+  var xhr = new XMLHttpRequest();
+  xhr.open('GET', API + '?t=' + Date.now(), true);
+  xhr.onreadystatechange = function() {
+    if (xhr.readyState !== 4) return;
+    btn.disabled = false; btn.textContent = '↻ Atualizar';
+    if (xhr.status !== 200) { showErr('HTTP ' + xhr.status + ': ' + xhr.statusText); return; }
+    var data;
+    try { data = JSON.parse(xhr.responseText); } catch(e) { showErr('Resposta inválida do servidor.<br><small>' + xhr.responseText.substring(0,200) + '</small>'); return; }
+    if (!data.success) { showErr(data.error || 'Erro desconhecido'); return; }
+
+    allData = data.extensions || [];
+    updateStats(data);
+    renderTable();
+
+    document.getElementById('hmeta').innerHTML =
+      'Servidor: <b>' + data.server + '</b><br>Atualizado: <b>' + data.timestamp + '</b>';
+    document.getElementById('fts').textContent = 'Última consulta: ' + data.timestamp;
+  };
+  xhr.send();
+}
+
+function updateStats(data) {
+  var total = data.total || allData.length;
+  var reg   = data.registered || 0;
+  var macs  = data.with_mac || 0;
+  // conta fabricantes distintos
+  var fabs = {};
+  for (var i=0; i<allData.length; i++) {
+    var f = allData[i].fabricante;
+    if (f && f !== '-') fabs[f] = 1;
+  }
+  document.getElementById('s-tot').textContent = total;
+  document.getElementById('s-reg').textContent = reg;
+  document.getElementById('s-unr').textContent = total - reg;
+  document.getElementById('s-mac').textContent = macs;
+  document.getElementById('s-fab').textContent = Object.keys(fabs).length;
+}
+
+function showErr(msg) {
+  document.getElementById('tbox').innerHTML =
+    '<div class="state"><div class="err-icon">⚠</div><div class="err-msg">Não foi possível conectar ao AMI</div><div class="err-det">' + msg + '</div></div>';
+}
+
+function setFilter(f) {
+  curFilter = f;
+  var ids = ['all','reg','unr','mac'];
+  for (var i=0; i<ids.length; i++) {
+    var el = document.getElementById('f-' + ids[i]);
+    if (el) el.className = 'fb' + (ids[i] === f ? ' on' : '');
+  }
+  applyFilters();
+}
+
+function applyFilters() {
+  var q = document.getElementById('search').value.toLowerCase();
+  var rows = document.querySelectorAll('tbody tr');
+  var visible = 0;
+  for (var i=0; i<rows.length; i++) {
+    var tr = rows[i];
+    var ramal = (tr.getAttribute('data-ramal') || '').toLowerCase();
+    var ip    = (tr.getAttribute('data-ip')    || '').toLowerCase();
+    var mac   = (tr.getAttribute('data-mac')   || '').toLowerCase();
+    var mod   = (tr.getAttribute('data-mod')   || '').toLowerCase();
+    var fab   = (tr.getAttribute('data-fab')   || '').toLowerCase();
+    var reg   = tr.getAttribute('data-reg') === '1';
+    var hasMac= mac !== '' && mac !== '-';
+
+    var mSearch = !q || ramal.indexOf(q)>=0 || ip.indexOf(q)>=0 || mac.indexOf(q)>=0 || mod.indexOf(q)>=0 || fab.indexOf(q)>=0;
+    var mFilter =
+      curFilter === 'all' ||
+      (curFilter === 'reg' && reg) ||
+      (curFilter === 'unr' && !reg) ||
+      (curFilter === 'mac' && hasMac);
+
+    if (mSearch && mFilter) { tr.className = ''; visible++; }
+    else                    { tr.className = 'hide'; }
+  }
+  document.getElementById('rc').textContent = visible + ' ramal(is)';
+}
+
+function sortBy(col) {
+  if (sortCol === col) sortAsc = !sortAsc;
+  else { sortCol = col; sortAsc = true; }
+  renderTable();
+}
+
+function arrow(col) { return sortCol === col ? (sortAsc ? ' ▲' : ' ▼') : ''; }
+
+function esc(s) {
+  if (!s) return '';
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function renderTable() {
+  var sorted = allData.slice().sort(function(a, b) {
+    var av = a[sortCol] !== undefined ? a[sortCol] : '';
+    var bv = b[sortCol] !== undefined ? b[sortCol] : '';
+    if (sortCol === 'ramal') { av = parseInt(av)||0; bv = parseInt(bv)||0; }
+    else { av = String(av).toLowerCase(); bv = String(bv).toLowerCase(); }
+    if (av < bv) return sortAsc ? -1 : 1;
+    if (av > bv) return sortAsc ?  1 : -1;
+    return 0;
+  });
+
+  var rows = '';
+  for (var i=0; i<sorted.length; i++) {
+    var e = sorted[i];
+    var cc = chipClass(e.fabricante);
+    var fabLabel = (e.fabricante && e.fabricante !== '-') ? e.fabricante : '?';
+    var modLabel = (e.modelo     && e.modelo     !== '-') ? e.modelo     : '';
+    var macLabel = (e.mac        && e.mac        !== '-') ? e.mac        : '—';
+    var macCls   = (e.mac        && e.mac        !== '-') ? 't-mac'      : 't-mac none';
+    var uaTip    = esc(e.useragent || '');
+
+    rows +=
+      '<tr data-ramal="' + esc(e.ramal) + '" data-ip="' + esc(e.ip) + '" ' +
+          'data-mac="'   + esc(e.mac)   + '" data-reg="'+ (e.registered?'1':'0') + '" ' +
+          'data-mod="'   + esc(e.modelo)+ '" data-fab="' + esc(e.fabricante) + '">' +
+        '<td class="t-ext">'  + esc(e.ramal) + '</td>' +
+        '<td class="t-ip">'   + (e.ip !== '-' ? esc(e.ip) : '<span style="color:var(--muted)">?</span>') +
+          (e.port && e.port !== '-' ? '<span class="t-port">:' + esc(e.port) + '</span>' : '') + '</td>' +
+        '<td>' + esc(e.type) + '</td>' +
+        '<td class="' + macCls + '">' + esc(macLabel) + '</td>' +
+        '<td class="col-fab">' +
+          '<span class="chip ' + cc + '">' + esc(fabLabel) + '</span>' +
+          (modLabel ? ' <span style="color:var(--text);font-size:11px">' + esc(modLabel) + '</span>' : '') +
+        '</td>' +
+        '<td>' +
+          '<span class="badge ' + (e.registered ? 'ok' : 'fail') + '">' +
+            (e.registered ? 'Registrado' : 'Offline') +
+          '</span>' +
+        '</td>' +
+        '<td class="col-ua">' +
+          (uaTip ? '<span class="ua-wrap" data-ua="' + uaTip + '" title="' + uaTip + '">' + esc(e.useragent) + '</span>' : '<span style="color:var(--muted)">—</span>') +
+        '</td>' +
+      '</tr>';
+  }
+
+  var html =
+    '<table>' +
+      '<thead><tr>' +
+        '<th class="'+(sortCol==='ramal'?'srt':'')+'" onclick="sortBy(\'ramal\')">Ramal'     +arrow('ramal')     +'</th>'+
+        '<th class="'+(sortCol==='ip'   ?'srt':'')+'" onclick="sortBy(\'ip\')"   >IP / Porta' +arrow('ip')        +'</th>'+
+        '<th class="'+(sortCol==='type' ?'srt':'')+'" onclick="sortBy(\'type\')" >Tipo'       +arrow('type')      +'</th>'+
+        '<th class="'+(sortCol==='mac'  ?'srt':'')+'" onclick="sortBy(\'mac\')"  >MAC Address'+arrow('mac')       +'</th>'+
+        '<th class="col-fab '+(sortCol==='fabricante'?'srt':'')+'" onclick="sortBy(\'fabricante\')">Aparelho / Modelo'+arrow('fabricante')+'</th>'+
+        '<th class="'+(sortCol==='status'?'srt':'')+'" onclick="sortBy(\'status\')">Status'   +arrow('status')    +'</th>'+
+        '<th class="col-ua">User-Agent</th>' +
+      '</tr></thead>' +
+      '<tbody>' + rows + '</tbody>' +
+    '</table>';
+
+  document.getElementById('tbox').innerHTML = html;
+  document.getElementById('rc').textContent = sorted.length + ' ramal(is)';
+  applyFilters();
+}
+
+function exportExcel() {
+  if (!allData || allData.length === 0) { alert('Nenhum dado para exportar. Aguarde carregar os ramais.'); return; }
+
+  var btn = document.getElementById('ebtn');
+  btn.disabled = true; btn.textContent = '⬇ Gerando...';
+
+  // Monta XML no formato SpreadsheetML (abre direto no Excel)
+  var xml = '<?xml version="1.0" encoding="UTF-8"?><?mso-application progid="Excel.Sheet"?>';
+  xml += '<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"';
+  xml += ' xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet">';
+  xml += '<Styles>';
+  xml += '<Style ss:ID="header"><Font ss:Bold="1" ss:Color="#FFFFFF"/><Interior ss:Color="#1e3a5f" ss:Pattern="Solid"/><Alignment ss:Horizontal="Center"/></Style>';
+  xml += '<Style ss:ID="ok"><Font ss:Color="#006400"/><Interior ss:Color="#e6ffe6" ss:Pattern="Solid"/></Style>';
+  xml += '<Style ss:ID="fail"><Font ss:Color="#8b0000"/><Interior ss:Color="#ffe6e6" ss:Pattern="Solid"/></Style>';
+  xml += '<Style ss:ID="mac"><Font ss:Color="#003399"/></Style>';
+  xml += '<Style ss:ID="alt"><Interior ss:Color="#f5f8ff" ss:Pattern="Solid"/></Style>';
+  xml += '</Styles>';
+  xml += '<Worksheet ss:Name="Ramais">';
+  xml += '<Table>';
+
+  // Larguras das colunas
+  xml += '<Column ss:Width="70"/>';   // Ramal
+  xml += '<Column ss:Width="130"/>';  // IP
+  xml += '<Column ss:Width="70"/>';   // Porta
+  xml += '<Column ss:Width="70"/>';   // Tipo
+  xml += '<Column ss:Width="145"/>';  // MAC
+  xml += '<Column ss:Width="110"/>';  // Fabricante
+  xml += '<Column ss:Width="100"/>';  // Modelo
+  xml += '<Column ss:Width="100"/>';  // Status
+  xml += '<Column ss:Width="220"/>';  // User-Agent
+
+  // Cabeçalho
+  xml += '<Row>';
+  var headers = ['Ramal','IP','Porta','Tipo','MAC Address','Fabricante','Modelo','Status','User-Agent'];
+  for (var h = 0; h < headers.length; h++) {
+    xml += '<Cell ss:StyleID="header"><Data ss:Type="String">' + headers[h] + '</Data></Cell>';
+  }
+  xml += '</Row>';
+
+  // Dados
+  // Aplica filtro atual
+  var filtered = [];
+  var q = document.getElementById('search').value.toLowerCase();
+  for (var i = 0; i < allData.length; i++) {
+    var e = allData[i];
+    var ramal = (e.ramal || '').toLowerCase();
+    var ip    = (e.ip    || '').toLowerCase();
+    var mac   = (e.mac   || '').toLowerCase();
+    var mod   = (e.modelo|| '').toLowerCase();
+    var fab   = (e.fabricante||'').toLowerCase();
+    var reg   = e.registered;
+    var hasMac= mac !== '' && mac !== '-';
+
+    var mSearch = !q || ramal.indexOf(q)>=0 || ip.indexOf(q)>=0 || mac.indexOf(q)>=0 || mod.indexOf(q)>=0 || fab.indexOf(q)>=0;
+    var mFilter =
+      curFilter === 'all' ||
+      (curFilter === 'reg' && reg) ||
+      (curFilter === 'unr' && !reg) ||
+      (curFilter === 'mac' && hasMac);
+
+    if (mSearch && mFilter) filtered.push(e);
+  }
+
+  for (var j = 0; j < filtered.length; j++) {
+    var e = filtered[j];
+    var rowStyle = (j % 2 === 1) ? ' ss:StyleID="alt"' : '';
+    xml += '<Row' + rowStyle + '>';
+
+    var macVal  = (e.mac  && e.mac  !== '-') ? e.mac  : '';
+    var fabVal  = (e.fabricante && e.fabricante !== '-') ? e.fabricante : '';
+    var modVal  = (e.modelo     && e.modelo     !== '-') ? e.modelo     : '';
+    var uaVal   = e.useragent || '';
+    var portVal = (e.port && e.port !== '-') ? e.port : '';
+    var ipVal   = (e.ip && e.ip !== '-') ? e.ip : '';
+    var status  = e.registered ? 'Registrado' : 'Offline';
+    var stStyle = e.registered ? 'ok' : 'fail';
+
+    function cellStr(val, style) {
+      var s = style ? ' ss:StyleID="' + style + '"' : '';
+      var safe = String(val).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+      return '<Cell' + s + '><Data ss:Type="String">' + safe + '</Data></Cell>';
+    }
+
+    xml += cellStr(e.ramal, '');
+    xml += cellStr(ipVal,   '');
+    xml += cellStr(portVal, '');
+    xml += cellStr(e.type,  '');
+    xml += cellStr(macVal,  macVal ? 'mac' : '');
+    xml += cellStr(fabVal,  '');
+    xml += cellStr(modVal,  '');
+    xml += cellStr(status,  stStyle);
+    xml += cellStr(uaVal,   '');
+    xml += '</Row>';
+  }
+
+  xml += '</Table>';
+  // Rodapé na planilha
+  xml += '<WorksheetOptions xmlns="urn:schemas-microsoft-com:office:excel">';
+  xml += '<FreezePanes/><FrozenNoSplit/><SplitHorizontal>1</SplitHorizontal><TopRowBottomPane>1</TopRowBottomPane>';
+  xml += '</WorksheetOptions>';
+  xml += '</Worksheet></Workbook>';
+
+  // Download
+  var blob = new Blob([xml], {type: 'application/vnd.ms-excel;charset=utf-8'});
+  var url  = URL.createObjectURL(blob);
+  var a    = document.createElement('a');
+  var now  = new Date();
+  var ts   = now.getFullYear() + ('0'+(now.getMonth()+1)).slice(-2) + ('0'+now.getDate()).slice(-2) +
+             '_' + ('0'+now.getHours()).slice(-2) + ('0'+now.getMinutes()).slice(-2);
+  a.href     = url;
+  a.download = 'ramais_' + ts + '.xls';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+
+  btn.disabled = false; btn.textContent = '⬇ Exportar Excel';
+}
+
+loadData();
+</script>
+</body>
+</html>
