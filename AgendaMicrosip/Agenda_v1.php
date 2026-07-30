@@ -83,7 +83,7 @@ if (file_exists($sqlite_path)) {
 
 // 4. Saída JSON formatada para MicroSIP
 echo json_encode([
-    "refresh" => 1, // 5 minutos
+    "refresh" =>  , // 5 minutos
     "items"   => $items
 ], JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
 

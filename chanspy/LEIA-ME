@@ -9,9 +9,13 @@
     Para realizar este procedimento em centrais Asterisk, localize o arquivo:
       - Navegue até o arquivo:  /etc/asterisk/extensions_additional.conf
 
-    Localize a linha [app-chanspy] e mude as configurações para inserir uma senha, que será solicitada quando um ramal tentar escutar uma ligação. O arquivo deverá ficar da seguinte forma:
+    Localize a linha [app-chanspy] e mude as configurações para inserir uma senha, 
+    que será solicitada quando um ramal tentar escutar uma ligação. 
+    
+    O arquivo deverá ficar da seguinte forma:
 
-    PARA A FUNÇÃO CHANSPY FUNCIONAR CORRETAMENTE, INSIRA O CÓDIGO NO ARQUIVO extensions_override_issabelpbx.conf 
+    PARA A FUNÇÃO CHANSPY FUNCIONAR CORRETAMENTE, INSIRA O CÓDIGO NO ARQUIVO 
+  extensions_override_issabelpbx.conf 
 
 [app-chanspy]
 exten => 555,1,Macro(user-callerid,)
